@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="my" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SWEET BEAUTY STUDIO 🌸 | Skincare & Cosmetics Boutique</title>
+    
+    <!-- Fonts & FontAwesome 6 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase SDK (v10 Compat for robust browser standalone script) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        beauty: {
+                            50: '#FFF1F2',
+                            100: '#FFE4E6',
+                            200: '#FECDD3',
+                            300: '#FDA4AF',
+                            400: '#FB7185',
+                            500: '#F43F5E', // Rose Pink
+                            600: '#E11D48',
+                            700: '#BE123C',
+                            800: '#9F1239',
+                            900: '#881337'
+                        },
+                        blush: {
+                            50: '#FDF8F6',
+                            100: '#F2E8E5',
+                            200: '#EADDD7',
+                            400: '#CBB2A9',
+                            500: '#A07E72'
+                        },
+                        gold: {
+                            300: '#FDE047',
+                            400: '#FACC15',
+                            500: '#EAB308',
+                            600: '#CA8A04'
+                        },
+                        secondary: {
+                            50: '#FAF8F9',
+                            100: '#F4EFF1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A'
+                        }
+                    },
+                    fontFamily: { 
+                        sans: ['"Noto Sans Myanmar"', '"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', '"Noto Sans Myanmar"', 'serif']
+                    },
+                    animation: {
+                        'float-slow': 'floating 4s ease-in-out infinite',
+                        'float-reverse': 'floatingRev 5s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2.5s infinite',
+                        'bounce-soft': 'bounceSoft 2s infinite',
+                        'heart-beat': 'heartBeat 1.5s ease-in-out infinite',
+                        'sparkle-spin': 'spin 14s linear infinite',
+                        'modal-pop': 'modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'shake': 'shake 0.4s ease-in-out'
+                    },
+                    keyframes: {
+                        floating: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(3deg)' }
+                        },
+                        floatingRev: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(10px) rotate(-3deg)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+                            '50%': { opacity: '1', transform: 'scale(1.08)' }
+                        },
+                        heartBeat: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '25%': { transform: 'scale(1.15)' },
+                            '50%': { transform: 'scale(0.96)' },
+                            '75%': { transform: 'scale(1.1)' }
+                        },
+                        bounceSoft: {
+                            '0%, 100%': { transform: 'translateY(-5%)' },
+                            '50%': { transform: 'none' }
+                        },
+                        modalPop: {
+                            '0%': { opacity: '0', transform: 'scale(0.92) translateY(12px)' },
+                            '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '20%, 60%': { transform: 'translateX(-8px)' },
+                            '40%, 80%': { transform: 'translateX(8px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 1. Myanmar Typography & Vowel Mark Overlap Fix */
+        body, p, li, span, label, input, textarea, select, .prose {
+            line-height: 1.85 !important;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 1.6 !important;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        nav, button, .btn-cute, .badge {
+            line-height: 1.5 !important;
+        }
+        .whitespace-nowrap {
+            white-space: nowrap !important;
+            word-break: normal !important;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FFF1F2; }
+        ::-webkit-scrollbar-thumb { background: #FDA4AF; border-radius: 9999px; }
+
+        /* Aesthetic Glass Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(254, 205, 211, 0.7);
+            box-shadow: 0 10px 30px -8px rgba(244, 63, 94, 0.12);
+        }
+        .glass-card:hover {
+            border-color: rgba(251, 113, 133, 0.95);
+            box-shadow: 0 16px 36px -6px rgba(244, 63, 94, 0.2);
+        }
+        
+        .hero-gradient {
+            background: radial-gradient(circle at 10% 20%, rgba(255, 228, 230, 0.75) 0%, rgba(255, 241, 242, 1) 50%, rgba(254, 205, 211, 0.8) 100%);
+        }
+
+        /* Marquee Ticker */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee { display: flex; width: 200%; animation: marquee 24s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, #FFE4E6 25%, #FFF1F2 50%, #FFE4E6 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        /* Splash Screen */
+        #splashScreen {
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.7s;
+        }
+        #splashScreen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .blob-pink {
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            animation: morphPink 8s ease-in-out infinite;
+        }
+        @keyframes morphPink {
+            0%, 100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+            34% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
+            67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
+        }
+
+        /* Cute Button Hover Bounce */
+        .btn-cute {
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap !important;
+        }
+        .btn-cute:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+        .btn-cute:active {
+            transform: translateY(0px) scale(0.97);
+        }
+
+        /* 2. Strict Responsive Navigation: Desktop links strictly hidden on screens < 1024px */
+        @media (max-width: 1023px) {
+            .desktop-nav-links {
+                display: none !important;
+            }
+        }
+
+        /* 3. Hide Netlify Injected Deployment Badges & Feedback Widgets */
+        iframe[src*="netlify"],
+        #netlify-badge,
+        .netlify-badge,
+        div:has(> iframe[src*="netlify"]),
+        [data-netlify-deploy-id],
+        .netlify-feedback-widget,
+        #netlify-feedback,
+        div[class*="netlify-badge"],
+        div[id*="netlify-badge"],
+        a[href*="netlify.com"][style*="position: fixed"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+    </style>
+</head>
+<body class="bg-blush-50 text-secondary-800 font-sans selection:bg-beauty-300 selection:text-white overflow-x-hidden relative">
+
+    <!-- ========================================== -->
+    <!-- 1. WELCOME SPLASH & BRAND MOTION -->
+    <!-- ========================================== -->
+    <div id="splashScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-rose-50 via-white to-pink-100/90 overflow-hidden p-4">
+        <!-- Floating Cute Beauty Icons in Background -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-25">
+            <span class="absolute top-12 left-10 text-5xl animate-float-slow">💄</span>
+            <span class="absolute top-1/4 right-12 text-6xl animate-float-reverse">✨</span>
+            <span class="absolute bottom-20 left-16 text-5xl animate-float-slow">🌸</span>
+            <span class="absolute bottom-28 right-20 text-6xl animate-float-reverse">🧴</span>
+            <span class="absolute top-2/3 left-1/3 text-4xl animate-float-slow">💅</span>
+            <span class="absolute bottom-12 left-2/3 text-5xl animate-float-slow">💖</span>
+        </div>
+
+        <div class="absolute blob-pink bg-gradient-to-tr from-beauty-200/50 via-rose-100 to-amber-100/40 w-96 h-96 -z-1 blur-2xl transform scale-125"></div>
+
+        <div class="relative z-10 w-full max-w-md bg-white/95 rounded-[2.5rem] p-7 sm:p-8 shadow-2xl border-2 border-beauty-200/80 text-center backdrop-blur-md">
+            
+            <!-- Logo with Animated Ring -->
+            <div class="relative w-28 h-28 mx-auto mb-5">
+                <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-beauty-400 via-pink-300 to-amber-200 animate-sparkle-spin opacity-80 blur-[4px]"></div>
+                <div class="relative w-full h-full bg-white rounded-full p-1.5 shadow-xl border-2 border-beauty-200 flex items-center justify-center">
+                    <!-- Sweet Beauty Studio Brand Logo -->
+                    <div class="w-full h-full rounded-full bg-[#f8b4c4] flex flex-col items-center justify-center p-2 text-center shadow-inner">
+                        <span class="text-[9px] font-black tracking-widest text-[#8a3350] uppercase leading-tight font-serif">SWEET</span>
+                        <span class="text-[8px] font-extrabold tracking-wider text-[#a04360] uppercase leading-none">BEAUTY</span>
+                        <span class="text-[7px] font-bold tracking-widest text-[#8a3350] uppercase mt-0.5">STUDIO</span>
+                    </div>
+                </div>
+                <span class="absolute -top-1 -right-1 text-2xl animate-heart-beat">💖</span>
+            </div>
+
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-beauty-50 border border-beauty-200 text-beauty-600 text-xs font-bold mb-3 shadow-xs">
+                <i class="fa-solid fa-sparkles text-amber-400"></i> Welcome to Sweet Beauty Studio ✨
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-black text-secondary-900 mb-2 tracking-tight">
+                SWEET BEAUTY STUDIO <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-beauty-500 via-rose-500 to-pink-600 font-serif">မှ နွေးထွေးစွာ ကြိုဆိုပါတယ်ရှင့် 🌸</span>
+            </h1>
+
+            <p class="text-xs sm:text-sm text-secondary-500 font-medium mb-6 leading-relaxed">
+                စစ်မှန်သော Skincare၊ နှုတ်ခမ်းနီ၊ မိတ်ကပ်နှင့် အလှကုန်ပစ္စည်းအမျိုးမျိုးကို စိတ်တိုင်းကျ ရွေးချယ်မှာယူနိုင်ပါပြီ 💕
+            </p>
+            
+            <!-- Progress Bar -->
+            <div class="relative w-full max-w-xs mx-auto mb-6">
+                <div class="w-full h-3 bg-beauty-100 rounded-full overflow-hidden p-0.5 shadow-inner">
+                    <div id="splashProgress" class="h-full bg-gradient-to-r from-beauty-400 via-beauty-500 to-rose-500 w-0 transition-all duration-[2200ms] ease-out rounded-full"></div>
+                </div>
+                <div id="splashIcon" class="absolute -top-3 left-0 transition-all duration-[2200ms] ease-out text-lg pointer-events-none transform -translate-x-2">🌸</div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 items-center justify-center">
+                <button id="btnEnterStore" class="w-full sm:w-auto flex-1 bg-gradient-to-r from-beauty-500 to-rose-500 hover:from-beauty-600 hover:to-rose-600 text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-2xl shadow-lg shadow-beauty-500/30 btn-cute flex items-center justify-center gap-2">
+                    <span>ဆိုင်ထဲသို့ ဝင်ရောက်မည်</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+                <a href="https://t.me/sweetbeautystudio" target="_blank" class="w-full sm:w-auto bg-pink-50 hover:bg-beauty-100 text-beauty-700 border border-beauty-200 font-bold text-xs sm:text-sm py-3 px-5 rounded-2xl transition-all flex items-center justify-center gap-2 btn-cute">
+                    <i class="fa-brands fa-telegram text-sky-500"></i>
+                    <span>Telegram Channel</span>
+                </a>
+            </div>
+
+            <p class="text-[11px] text-secondary-400 font-medium mt-4">
+                (ခဏစောင့်ဆိုင်းပါက အလိုအလျောက် ဖွင့်ပေးပါမည် သို့မဟုတ် နှိပ်၍ ကျော်နိုင်ပါသည်)
+            </p>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. ANNOUNCEMENT TICKER (COMPACT & CLEAN) -->
+    <!-- ========================================== -->
+    <aside aria-label="ကြေညာချက်" class="bg-gradient-to-r from-beauty-600 via-rose-500 to-beauty-600 text-white py-2 overflow-hidden text-xs font-semibold tracking-wide z-30 relative shadow-xs">
+        <div class="animate-marquee whitespace-nowrap flex gap-12 items-center font-bold text-[11px]">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-truck-fast text-yellow-300"></i> မြို့နယ်အသီးသီးသို့ အိမ်အရောက်ပို့ပေးပါသည်ရှင့်</span>
+            <span class="flex items-center gap-2"><i class="fa-brands fa-telegram text-sky-300"></i> Order to Telegram: @sweet_beautystudio</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-sparkles text-yellow-300"></i> 100% Authentic Skincare & Cosmetics စစ်စစ်များ</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-phone text-yellow-300"></i> တိုက်ရိုက် ဆက်သွယ်ရန်: 09-692575107</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-truck-fast text-yellow-300"></i> မြို့နယ်အသီးသီးသို့ အိမ်အရောက်ပို့ပေးပါသည်ရှင့်</span>
+            <span class="flex items-center gap-2"><i class="fa-brands fa-telegram text-sky-300"></i> Order to Telegram: @sweet_beautystudio</span>
+        </div>
+    </aside>
+
+    <!-- ========================================== -->
+    <!-- 3. NAVBAR -->
+    <!-- ========================================== -->
+    <nav class="sticky top-0 z-40 glass-card transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-20">
+                <!-- Brand Logo (Left) -->
+                <a href="#" class="flex items-center gap-3 shrink-0 group">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-beauty-400 via-rose-300 to-pink-500 p-0.5 shadow-md shadow-beauty-500/20 group-hover:scale-105 transition-transform shrink-0">
+                        <div class="w-full h-full bg-[#f8b4c4] rounded-[14px] flex flex-col items-center justify-center p-1 text-center">
+                            <span class="text-[8px] font-black text-[#8a3350] leading-none font-serif">SWEET</span>
+                            <span class="text-[7px] font-bold text-[#8a3350] leading-none mt-0.5">STUDIO</span>
+                        </div>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5">
+                            <h1 class="font-black text-base sm:text-xl text-beauty-700 leading-tight tracking-tight whitespace-nowrap">Sweet Beauty</h1>
+                            <span class="text-xs">✨</span>
+                        </div>
+                        <span class="text-[9px] sm:text-[10px] font-bold text-secondary-500 uppercase tracking-wider block whitespace-nowrap">Beauty & Skincare Studio</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links (Only on >= 1024px) -->
+                <div class="desktop-nav-links hidden lg:flex items-center space-x-7 font-bold text-xs sm:text-sm text-secondary-700 whitespace-nowrap">
+                    <a href="#home" class="hover:text-beauty-600 transition-colors">ပင်မစာမျက်နှာ</a>
+                    <a href="#catalog" class="hover:text-beauty-600 transition-colors">အလှကုန်ပစ္စည်းများ</a>
+                    <a href="#storeInfo" class="hover:text-beauty-600 transition-colors">ဆိုင်အချက်အလက်</a>
+                    <button id="btnOpenDeliveryGuide" class="hover:text-beauty-600 transition-colors text-secondary-600 flex items-center gap-1.5">
+                        <i class="fa-solid fa-truck-fast text-beauty-500"></i> ပို့ဆောင်မှု လမ်းညွှန်
+                    </button>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                    <!-- Telegram Direct Button -->
+                    <a href="https://t.me/sweetbeautystudio" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2.5 rounded-xl bg-sky-50 text-sky-600 border border-sky-200 hover:bg-sky-100 transition-all btn-cute shrink-0 min-h-[40px]">
+                        <i class="fa-brands fa-telegram text-base text-sky-500"></i>
+                        <span>Telegram</span>
+                    </a>
+
+                    <!-- Cart Trigger -->
+                    <button onclick="openCart()" class="relative bg-gradient-to-r from-beauty-500 to-rose-500 hover:from-beauty-600 hover:to-rose-600 text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-md shadow-beauty-500/25 transition-all btn-cute flex items-center gap-1.5 shrink-0 min-h-[40px]">
+                        <i class="fa-solid fa-basket-shopping text-sm"></i>
+                        <span class="hidden md:inline text-xs font-bold whitespace-nowrap">မှာယူမည့်စာရင်း</span>
+                        <span id="cartBadge" class="w-5 h-5 bg-white text-beauty-600 text-[10px] font-black rounded-full flex items-center justify-center shadow-xs">0</span>
+                    </button>
+
+                    <!-- Admin Trigger Button (PIN Protected) -->
+                    <button onclick="openAdmin()" title="Admin Panel (Ctrl+Shift+A)" class="w-10 h-10 rounded-xl bg-secondary-100 hover:bg-beauty-100 text-secondary-600 hover:text-beauty-600 flex items-center justify-center transition-colors text-sm shrink-0 min-h-[40px]">
+                        <i class="fa-solid fa-lock"></i>
+                    </button>
+
+                    <!-- Mobile Hamburger Button -->
+                    <button id="btnMobileNavToggle" class="lg:hidden w-10 h-10 rounded-xl bg-beauty-50 hover:bg-beauty-100 text-beauty-700 border border-beauty-200 flex items-center justify-center transition-colors text-base shrink-0 min-h-[40px]">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu Dropdown -->
+        <div id="mobileNavDrawer" class="hidden lg:hidden border-t border-beauty-100 bg-white/98 backdrop-blur-md px-5 py-5 space-y-3.5 font-bold text-xs sm:text-sm shadow-xl">
+            <a href="#home" class="block py-2 text-secondary-700 hover:text-beauty-600 flex items-center gap-3">
+                <i class="fa-solid fa-house text-beauty-500 w-5 text-center"></i> ပင်မစာမျက်နှာ
+            </a>
+            <a href="#catalog" class="block py-2 text-secondary-700 hover:text-beauty-600 flex items-center gap-3">
+                <i class="fa-solid fa-store text-beauty-500 w-5 text-center"></i> အလှကုန်ပစ္စည်းများ
+            </a>
+            <a href="#storeInfo" class="block py-2 text-secondary-700 hover:text-beauty-600 flex items-center gap-3">
+                <i class="fa-solid fa-circle-info text-beauty-500 w-5 text-center"></i> ဆိုင်အချက်အလက်
+            </a>
+            <button id="btnOpenDeliveryGuideMobile" class="w-full text-left py-2 text-secondary-700 hover:text-beauty-600 flex items-center gap-3">
+                <i class="fa-solid fa-truck-fast text-beauty-500 w-5 text-center"></i> ပို့ဆောင်မှုနှင့် ငွေချေစနစ် လမ်းညွှန်
+            </button>
+            <button onclick="openAdmin()" class="w-full text-left py-2 text-beauty-700 hover:text-beauty-800 flex items-center gap-3">
+                <i class="fa-solid fa-shield-halved text-beauty-500 w-5 text-center"></i> Admin Panel (PIN ဖြင့် ဝင်ရန်)
+            </button>
+            <div class="pt-3 border-t border-beauty-100 flex gap-2.5">
+                <a href="https://t.me/sweetbeautystudio" target="_blank" class="flex-1 py-2.5 text-center rounded-xl bg-sky-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-brands fa-telegram"></i> Telegram မှာမည်
+                </a>
+                <a href="tel:09692575107" class="flex-1 py-2.5 text-center rounded-xl bg-rose-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-phone"></i> ဖုန်းခေါ်မည်
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- 4. HERO SECTION -->
+    <!-- ========================================== -->
+    <header id="home" class="hero-gradient pt-8 pb-14 sm:pt-12 sm:pb-20 px-4 sm:px-6 rounded-b-[2.5rem] sm:rounded-b-[3.5rem] shadow-xs relative overflow-hidden">
+        <!-- Floating Emojis -->
+        <div class="absolute top-10 left-8 text-beauty-300 opacity-50 animate-float-slow text-3xl sm:text-4xl pointer-events-none">💄</div>
+        <div class="absolute bottom-10 right-8 text-beauty-400 opacity-50 animate-float-reverse text-3xl sm:text-4xl pointer-events-none">✨</div>
+        <div class="absolute top-1/3 right-12 text-pink-300 opacity-40 animate-float-slow text-2xl sm:text-3xl pointer-events-none">🌸</div>
+        <div class="absolute bottom-20 left-12 text-rose-300 opacity-40 animate-float-reverse text-2xl sm:text-3xl pointer-events-none">🧴</div>
+        
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white/85 backdrop-blur-md text-beauty-600 text-xs font-bold mb-4 sm:mb-6 border border-beauty-200 shadow-xs">
+                <span class="w-2 h-2 rounded-full bg-beauty-500 animate-ping"></span>
+                <span>100% Authentic Skincare & Makeup Studio 🌸</span>
+            </div>
+
+            <h2 class="text-2xl sm:text-4xl md:text-5xl font-black text-secondary-900 mb-4 sm:mb-6 leading-[1.6] tracking-tight">
+                စိတ်တိုင်းကျ လှပစေမယ့် <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-beauty-500 via-rose-500 to-pink-600 font-serif">Skincare & Makeup အစစ်များကို</span> 
+                တစ်နေရာတည်းမှာ ရယူလိုက်ပါ ✨
+            </h2>
+
+            <p class="text-xs sm:text-sm md:text-base text-secondary-600 mb-6 sm:mb-9 max-w-2xl mx-auto font-medium leading-[1.85] px-2">
+                Mistine Lip Tints၊ မျက်နှာသစ်၊ Whitening Soaps၊ ပေါင်းတင် Mask နှင့် အလှကုန်ပစ္စည်းစစ်စစ်များကို ဈေးနှုန်းမှန်ကန်စွာဖြင့် အိမ်အရောက်မှာယူနိုင်ပါပြီရှင့်။
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
+                <a href="#catalog" class="bg-gradient-to-r from-beauty-500 to-rose-500 hover:from-beauty-600 hover:to-rose-600 text-white px-7 sm:px-8 py-3.5 rounded-2xl font-bold text-xs sm:text-sm shadow-xl shadow-beauty-500/25 transition-all btn-cute flex items-center gap-2.5">
+                    <i class="fa-solid fa-bag-shopping"></i> ပစ္စည်းများ ကြည့်ရှုမည် 🌸
+                </a>
+                <a href="https://t.me/sweetbeautystudio" target="_blank" class="bg-white hover:bg-beauty-50 text-beauty-600 border-2 border-beauty-200 px-6 sm:px-7 py-3.5 rounded-2xl font-bold text-xs sm:text-sm shadow-xs transition-all btn-cute flex items-center gap-2">
+                    <i class="fa-brands fa-telegram text-sky-500 text-base"></i> Telegram မှ မေးမည်
+                </a>
+                <button id="btnHeroDeliveryInfo" class="bg-white/80 hover:bg-white text-secondary-700 border border-beauty-100 px-5 py-3.5 rounded-2xl font-bold text-xs transition-all btn-cute flex items-center gap-2">
+                    <i class="fa-solid fa-truck-fast text-beauty-500"></i> ပို့ဆောင်မှု အချက်အလက်
+                </button>
+            </div>
+            
+            <!-- Quick Info Cards -->
+            <div id="storeInfo" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-10 sm:mt-14 max-w-4xl mx-auto text-left">
+                <div class="glass-card p-4 rounded-2xl">
+                    <div class="w-8 h-8 rounded-xl bg-beauty-100 text-beauty-600 flex items-center justify-center text-sm mb-2">
+                        <i class="fa-brands fa-telegram"></i>
+                    </div>
+                    <p class="text-xs font-black text-secondary-800">Order to Cb ✨</p>
+                    <p class="text-[11px] text-secondary-500 mt-0.5">@sweet_beautystudio</p>
+                </div>
+                <div class="glass-card p-4 rounded-2xl">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm mb-2">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <p class="text-xs font-black text-secondary-800">အိမ်အရောက်ပို့ စနစ်</p>
+                    <p class="text-[11px] text-secondary-500 mt-0.5">မြို့နယ်အသီးသီးသို့ ပို့ဆောင်</p>
+                </div>
+                <div class="glass-card p-4 rounded-2xl">
+                    <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-sm mb-2">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <p class="text-xs font-black text-secondary-800">09-692575107</p>
+                    <p class="text-[11px] text-secondary-500 mt-0.5">တိုက်ရိုက် ဖုန်းဆက်ရန်</p>
+                </div>
+                <div class="glass-card p-4 rounded-2xl">
+                    <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-sm mb-2">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+                    <p class="text-xs font-black text-secondary-800">100% စစ်မှန်သော ပစ္စည်း</p>
+                    <p class="text-[11px] text-secondary-500 mt-0.5">အရည်အသွေး အာမခံ</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- 5. LIVE CATALOG SECTION (FIREBASE REAL-TIME BACKEND) -->
+    <!-- ========================================== -->
+    <main id="catalog" class="py-12 sm:py-16 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+                <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-beauty-50 border border-beauty-200 text-beauty-600 text-xs font-bold mb-2.5">
+                    <i class="fa-solid fa-fire-flame-curved text-amber-500"></i> Firebase Live Database Connected
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-black text-secondary-900 leading-[1.6]">အလှကုန်နှင့် Skincare ပစ္စည်းများ 🌸</h3>
+                <p class="text-secondary-500 text-xs sm:text-sm mt-1 leading-[1.85]">အချိန်နှင့်တပြေးညီ တိုက်ရိုက်ချိတ်ဆက်ထားသော ကုန်ပစ္စည်းစာရင်း</p>
+            </div>
+
+            <!-- Search, Sort & Filters -->
+            <div class="max-w-4xl mx-auto mb-8 sm:mb-10 space-y-4">
+                <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                    <!-- Search Input -->
+                    <div class="relative flex-1 w-full flex items-center bg-white border-2 border-beauty-200 rounded-2xl px-4 py-2 focus-within:ring-4 focus-within:ring-beauty-100 focus-within:border-beauty-400 shadow-sm transition-all">
+                        <i class="fa-solid fa-magnifying-glass text-beauty-400 text-base ml-1"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="ပစ္စည်းအမည် ရှာဖွေရန် (ဥပမာ - Mistine, Soap, Mask, Serum, Lip)..." 
+                            class="w-full bg-transparent px-3 py-1.5 text-xs sm:text-sm text-secondary-800 placeholder-secondary-400 focus:outline-none"
+                        >
+                        <button id="btnClearSearch" class="hidden text-secondary-400 hover:text-secondary-600 p-1">
+                            <i class="fa-solid fa-circle-xmark text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Price / Name Sorting Dropdown -->
+                    <div class="w-full sm:w-auto flex items-center gap-2 bg-white border-2 border-beauty-100 rounded-2xl px-3.5 py-2.5 shadow-xs shrink-0">
+                        <i class="fa-solid fa-arrow-down-short-wide text-xs text-beauty-500 ml-1"></i>
+                        <select id="sortSelect" class="bg-transparent text-xs font-bold text-secondary-700 focus:outline-none cursor-pointer pr-2">
+                            <option value="default">စီစဉ်မှု - မူလအတိုင်း</option>
+                            <option value="price-asc">ဈေးနှုန်း - အနည်းမှ အများ</option>
+                            <option value="price-desc">ဈေးနှုန်း - အများမှ အနည်း</option>
+                            <option value="name-asc">အမည် - က မှ အ (A to Z)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-2.5" id="categoryFilters">
+                    <button class="filter-btn active bg-beauty-500 text-white px-4 sm:px-5 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-beauty-500/20 btn-cute flex items-center gap-1.5" data-category="all">
+                        <span>✨ အားလုံး</span> <span id="countAll" class="bg-white/25 text-white px-2 py-0.5 rounded-full text-[10px]">0</span>
+                    </button>
+                    <button class="filter-btn bg-white text-secondary-600 hover:bg-beauty-50 border border-beauty-200 px-4 sm:px-5 py-2.5 rounded-2xl text-xs font-bold btn-cute flex items-center gap-1.5" data-category="lip">
+                        <span>💄 Lip & Makeup</span> <span id="countLip" class="bg-beauty-100 text-beauty-700 px-2 py-0.5 rounded-full text-[10px]">0</span>
+                    </button>
+                    <button class="filter-btn bg-white text-secondary-600 hover:bg-beauty-50 border border-beauty-200 px-4 sm:px-5 py-2.5 rounded-2xl text-xs font-bold btn-cute flex items-center gap-1.5" data-category="skincare">
+                        <span>🧴 Skincare & Serums</span> <span id="countSkin" class="bg-beauty-100 text-beauty-700 px-2 py-0.5 rounded-full text-[10px]">0</span>
+                    </button>
+                    <button class="filter-btn bg-white text-secondary-600 hover:bg-beauty-50 border border-beauty-200 px-4 sm:px-5 py-2.5 rounded-2xl text-xs font-bold btn-cute flex items-center gap-1.5" data-category="soap">
+                        <span>🧼 Soaps & Masks</span> <span id="countSoap" class="bg-beauty-100 text-beauty-700 px-2 py-0.5 rounded-full text-[10px]">0</span>
+                    </button>
+                    <button id="btnFilterFavs" class="bg-white text-rose-600 hover:bg-rose-50 border border-rose-200 px-4 py-2.5 rounded-2xl text-xs font-bold btn-cute flex items-center gap-1.5">
+                        <i class="fa-solid fa-heart text-rose-500"></i>
+                        <span>အကြိုက်ဆုံးများ</span>
+                        <span id="favBadgeCount" class="bg-rose-100 text-rose-600 px-2 py-0.5 rounded-full text-[10px]">0</span>
+                    </button>
+                </div>
+
+                <!-- Live Counter & Actions -->
+                <div class="flex items-center justify-between text-xs text-secondary-500 px-2 pt-1 flex-wrap gap-2">
+                    <span id="productCounterText">Firebase မှ ပစ္စည်းစာရင်း ရယူနေပါသည်...</span>
+                    <div class="flex items-center gap-3">
+                        <button onclick="openAdmin()" class="text-beauty-600 hover:text-beauty-800 font-bold inline-flex items-center gap-1">
+                            <i class="fa-solid fa-plus-circle"></i> ပစ္စည်းအသစ်ထည့်မည် (Admin)
+                        </button>
+                        <span class="text-slate-300">|</span>
+                        <button onclick="openCart()" class="text-secondary-600 hover:text-beauty-600 font-bold inline-flex items-center gap-1">
+                            <i class="fa-solid fa-basket-shopping"></i> စာရင်း (<span id="cartCountSummary">0</span>)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid: Container သီးသန့်ဖြစ်ပြီး Firebase ထဲက စာရင်းများ တိုက်ရိုက်တက်လာမည် -->
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
+            
+            <div id="noResults" class="hidden text-center py-16">
+                <i class="fa-solid fa-box-open text-5xl text-beauty-300 mb-3 block animate-bounce-soft"></i>
+                <p class="text-secondary-600 font-bold text-base">ရှာဖွေသော ပစ္စည်း မတွေ့ရှိပါခင်ဗျာ</p>
+                <p class="text-xs text-secondary-400 mt-1">အခြား အမည်တစ်ခုဖြင့် ရှာဖွေကြည့်ပါ သို့မဟုတ် အမျိုးအစား စစ်ဆေးပါ</p>
+                <button id="btnResetSearch" class="mt-4 px-5 py-2.5 bg-beauty-500 text-white rounded-xl text-xs font-bold shadow-md btn-cute">
+                    အားလုံးကို ပြန်ပြပါ
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- 6. SHOPPING CART / INQUIRY DRAWER -->
+    <!-- ========================================== -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-secondary-900/40 backdrop-blur-xs transition-opacity" onclick="closeCart()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col transform transition-transform translate-x-full z-10" id="cartPanel">
+            
+            <!-- Drawer Header -->
+            <div class="p-5 border-b border-beauty-100 bg-beauty-50/80 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-tr from-beauty-500 to-rose-500 text-white rounded-2xl flex items-center justify-center text-lg shadow-sm">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-secondary-800 text-base flex items-center gap-1.5">
+                            မှာယူမည့်စာရင်း <span class="text-sm">🌸</span>
+                        </h3>
+                        <p class="text-[10px] text-secondary-500 font-bold">ရွေးချယ်ထားသော အလှကုန်ပစ္စည်းများ</p>
+                    </div>
+                </div>
+                <button onclick="closeCart()" class="w-8 h-8 bg-white rounded-full text-secondary-500 hover:bg-beauty-100 hover:text-beauty-600 flex items-center justify-center transition-colors shadow-xs">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Drawer Items List -->
+            <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-3 bg-secondary-50/50"></div>
+
+            <!-- Drawer Footer / Summary & Actions -->
+            <div class="p-5 bg-white border-t border-beauty-100 shadow-[0_-10px_20px_rgba(244,63,94,0.04)] space-y-3">
+                <div>
+                    <label class="block text-[11px] font-bold text-secondary-600 mb-1">ပို့ရမည့်လိပ်စာ / အမှာစကား (Optional)</label>
+                    <input type="text" id="orderRemarkInput" placeholder="ဥပမာ - ရန်ကုန် လှိုင်မြို့နယ် သို့ အိမ်အရောက်ပို့ပါ" class="w-full bg-slate-50 border border-beauty-100 rounded-xl px-3.5 py-2 text-xs text-secondary-800 focus:outline-none focus:ring-2 focus:ring-beauty-400">
+                </div>
+
+                <!-- Price Subtotal Display -->
+                <div class="p-3 bg-beauty-50/60 rounded-2xl border border-beauty-100 space-y-1">
+                    <div class="flex justify-between items-center text-xs font-bold text-secondary-600">
+                        <span>ရွေးချယ်ထားသော ပစ္စည်း:</span>
+                        <span id="cartTotalCount" class="text-beauty-600 font-black">0 မျိုး</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs font-bold text-secondary-700 pt-1 border-t border-beauty-100">
+                        <span>ခန့်မှန်းကျသင့်ငွေ (Total):</span>
+                        <span id="cartEstimatedPrice" class="text-sm font-black text-beauty-600">0 Ks</span>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons: Direct to Shop Telegram & Messenger -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="orderViaTelegram()" class="w-full bg-sky-500 hover:bg-sky-600 text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all btn-cute">
+                        <i class="fa-brands fa-telegram text-base"></i> Telegram မှာမည်
+                    </button>
+                    <button onclick="orderViaMessenger()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all btn-cute">
+                        <i class="fa-brands fa-facebook-messenger text-base"></i> Messenger
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="tel:09692575107" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all btn-cute">
+                        <i class="fa-solid fa-phone text-xs"></i> 09692575107
+                    </a>
+                    <button id="btnCopyCartList" onclick="copyOrderList()" class="w-full bg-slate-100 hover:bg-slate-200 text-secondary-700 py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all btn-cute">
+                        <i class="fa-solid fa-copy text-xs"></i> စာရင်း Copy ယူမည်
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 7. PRODUCT DETAIL / PREVIEW MODAL -->
+    <!-- ========================================== -->
+    <div id="productDetailModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-secondary-900/60 backdrop-blur-sm">
+        <div class="relative w-full max-w-md bg-white rounded-3xl overflow-hidden shadow-2xl border border-beauty-100 flex flex-col max-h-[90vh]">
+            <button id="btnCloseDetailModal" onclick="closeProductDetail()" class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-secondary-600 flex items-center justify-center shadow-md transition-colors">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+
+            <div class="h-64 sm:h-72 bg-beauty-50 overflow-hidden relative">
+                <img id="detailModalImage" src="" alt="Product Image" class="w-full h-full object-cover">
+                <span id="detailModalCategory" class="absolute bottom-4 left-4 bg-beauty-500/90 backdrop-blur-md text-white text-[11px] font-black px-3 py-1 rounded-full shadow"></span>
+            </div>
+
+            <div class="p-6 flex-1 overflow-y-auto space-y-4">
+                <h3 id="detailModalName" class="text-lg font-black text-secondary-900 leading-[1.6]"></h3>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="p-3.5 bg-beauty-50/70 rounded-2xl border border-beauty-100">
+                        <span class="text-[10px] text-secondary-500 font-bold block">Retail Price (လက်လီ)</span>
+                        <span id="detailModalRetail" class="text-sm font-black text-beauty-600"></span>
+                    </div>
+                    <div class="p-3.5 bg-rose-50/70 rounded-2xl border border-rose-100">
+                        <span class="text-[10px] text-rose-500 font-bold block">Wholesale (လက်ကား)</span>
+                        <span id="detailModalWholesale" class="text-sm font-black text-rose-700"></span>
+                    </div>
+                </div>
+
+                <div class="p-3.5 bg-blush-100 rounded-2xl border border-beauty-100 text-xs text-secondary-600 space-y-1.5 leading-[1.85]">
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-500"></i> 100% စစ်မှန်သော ကုန်ပစ္စည်း (Authentic Guarantee)</div>
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-500"></i> မြို့နယ်အသီးသီးသို့ အိမ်အရောက်ပို့ဆောင်ပေးပါသည်</div>
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button id="btnDetailAddToCart" class="flex-1 bg-gradient-to-r from-beauty-500 to-rose-500 hover:from-beauty-600 hover:to-rose-600 text-white font-bold text-xs py-3 rounded-2xl shadow-md transition-all btn-cute flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-plus"></i> စာရင်းထဲ ထည့်မည် 💕
+                    </button>
+                    <a id="btnDetailTelegram" href="https://t.me/sweetbeautystudio" target="_blank" class="w-11 h-11 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white flex items-center justify-center text-lg shadow-md transition-all btn-cute">
+                        <i class="fa-brands fa-telegram"></i>
+                    </a>
+                    <a id="btnDetailMessenger" href="https://m.me/wan.ni.763260" target="_blank" class="w-11 h-11 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center text-lg shadow-md transition-all btn-cute">
+                        <i class="fa-brands fa-facebook-messenger"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 8. DELIVERY & ORDER INFORMATION MODAL -->
+    <!-- ========================================== -->
+    <div id="deliveryModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-secondary-900/60 backdrop-blur-sm">
+        <div class="relative w-full max-w-md bg-white rounded-3xl p-7 shadow-2xl border-2 border-beauty-100 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeDeliveryModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 rounded-full bg-beauty-100 text-beauty-600 mx-auto flex items-center justify-center text-2xl mb-3">
+                    <i class="fa-solid fa-truck-fast"></i>
+                </div>
+                <h3 class="text-xl font-black text-secondary-900 leading-[1.6]">ပို့ဆောင်မှုနှင့် မှာယူခြင်း 🌸</h3>
+                <p class="text-xs text-secondary-500 mt-1 leading-[1.85]">Sweet Beauty Studio ဝန်ဆောင်မှု အချက်အလက်များ</p>
+            </div>
+
+            <div class="space-y-3.5 text-xs text-secondary-600 leading-[1.85]">
+                <div class="p-3.5 rounded-2xl bg-beauty-50 border border-beauty-100 space-y-1">
+                    <h4 class="font-bold text-beauty-700 flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot"></i> အိမ်အရောက်ပို့ဆောင်မှု
+                    </h4>
+                    <p>• ရန်ကုန်နှင့် အခြားမြို့နယ်များသို့ အိမ်အရောက် Delivery ဖြင့် ပို့ဆောင်ပေးပါသည်။</p>
+                    <p>• ပစ္စည်းရောက်မှ ငွေချေစနစ် (COD) ဖြင့်လည်း မှာယူနိုင်ပါသည်။</p>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-blush-100 border border-beauty-200 space-y-1">
+                    <h4 class="font-bold text-secondary-800 flex items-center gap-2">
+                        <i class="fa-brands fa-telegram text-sky-500"></i> Telegram တွင် မှာယူရန်
+                    </h4>
+                    <p>• Order to Cb: <strong>@sweet_beautystudio</strong> (သို့မဟုတ်) ဖုန်း 09-692575107 သို့ တိုက်ရိုက် မေးမြန်းမှာယူနိုင်ပါသည်။</p>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-cream-100 border border-beauty-100 space-y-1">
+                    <h4 class="font-bold text-secondary-800 flex items-center gap-2">
+                        <i class="fa-solid fa-credit-card text-emerald-600"></i> ငွေပေးချေမှုပုံစံများ
+                    </h4>
+                    <p>• KPay, WavePay, Mobile Banking တို့ဖြင့် % ပေးစရာမလိုဘဲ အဆင်ပြေစွာ ငွေလွှဲနိုင်ပါသည်။</p>
+                </div>
+            </div>
+
+            <button onclick="closeDeliveryModal()" class="mt-6 w-full py-3 bg-beauty-500 hover:bg-beauty-600 text-white rounded-xl font-bold text-xs shadow-md btn-cute">
+                နားလည်ပါပြီရှင့် 💕
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 9. ADMIN SECURITY PIN MODAL (လုံခြုံရေး စနစ်) -->
+    <!-- ========================================== -->
+    <div id="adminPinModal" class="fixed inset-0 z-[65] hidden items-center justify-center p-4 bg-secondary-900/80 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-sm rounded-[2rem] p-7 shadow-2xl border-2 border-beauty-200 text-center animate-modal-pop">
+            <div class="w-16 h-16 rounded-2xl bg-beauty-50 text-beauty-600 mx-auto flex items-center justify-center text-2xl mb-4 shadow-sm">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            
+            <h3 class="font-black text-lg text-secondary-900 mb-1">Admin Security Access 🔒</h3>
+            <p class="text-xs text-secondary-500 mb-5 leading-[1.85]">
+                Admin Panel သို့ ဝင်ရောက်ရန် လျှို့ဝှက် PIN နံပါတ် ရိုက်ထည့်ပါ
+            </p>
+
+            <form id="adminPinForm" class="space-y-4">
+                <div class="relative">
+                    <input 
+                        type="password" 
+                        id="adminPinInput" 
+                        maxlength="8" 
+                        placeholder="PIN (Default: 8888)" 
+                        class="w-full text-center tracking-widest font-black text-xl border-2 border-beauty-200 rounded-2xl py-3 px-4 focus:ring-4 focus:ring-beauty-100 focus:border-beauty-400 outline-none transition-all placeholder:text-secondary-400 placeholder:text-xs placeholder:font-normal placeholder:tracking-normal"
+                        required
+                        autocomplete="off"
+                    >
+                    <button type="button" id="btnTogglePinVisibility" class="absolute right-4 top-3.5 text-secondary-400 hover:text-beauty-600 transition-colors p-1">
+                        <i class="fa-solid fa-eye text-sm" id="pinEyeIcon"></i>
+                    </button>
+                </div>
+
+                <p id="adminPinError" class="text-rose-500 text-xs font-bold hidden flex items-center justify-center gap-1.5 animate-shake">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span>PIN နံပါတ် မှားယွင်းနေပါသည်! (Default: 8888)</span>
+                </p>
+
+                <div class="flex gap-2.5 pt-1">
+                    <button type="button" onclick="closeAdminPinModal()" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-secondary-600 font-bold text-xs transition-all">
+                        မဝင်တော့ပါ
+                    </button>
+                    <button type="submit" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-beauty-500 to-rose-500 hover:from-beauty-600 hover:to-rose-600 text-white font-bold text-xs shadow-md transition-all btn-cute">
+                        အတည်ပြုမည်
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 10. ADMIN PRODUCT MANAGER (FIREBASE REALTIME + GALLERY UPLOAD) -->
+    <!-- ========================================== -->
+    <div id="adminModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-secondary-900/80 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-7 shadow-2xl border-2 border-beauty-200 animate-modal-pop max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-beauty-100 text-beauty-600 flex items-center justify-center text-sm shadow-xs">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-base text-secondary-800 leading-[1.4]">Admin Panel</h3>
+                        <p class="text-[10px] text-secondary-400">Firebase တိုက်ရိုက် ထည့်သွင်း/ပြင်ဆင်ခြင်း</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="lockAdminSession()" title="Lock Admin Panel" class="text-xs text-rose-500 hover:text-rose-700 p-1.5 rounded-lg bg-rose-50 font-bold inline-flex items-center gap-1">
+                        <i class="fa-solid fa-lock"></i> Lock
+                    </button>
+                    <button onclick="closeAdmin()" class="text-secondary-400 hover:text-secondary-700 w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-100">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <form id="addProductForm" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold text-secondary-600 mb-1">ပစ္စည်းအမည် *</label>
+                    <input type="text" id="addName" required placeholder="ဥပမာ - Mistine Lip Gloss Tint (Cherry)" class="w-full border border-secondary-200 rounded-xl p-2.5 text-xs sm:text-sm focus:ring-2 focus:ring-beauty-400 outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-xs font-bold text-secondary-600 mb-1">လက်လီဈေး *</label>
+                        <input type="text" id="addRetail" required placeholder="9,000 Ks" class="w-full border border-secondary-200 rounded-xl p-2.5 text-xs sm:text-sm focus:ring-2 focus:ring-beauty-400 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-secondary-600 mb-1">လက်ကားဈေး *</label>
+                        <input type="text" id="addWholesale" required placeholder="26,500 Ks (၃ ခုပါ)" class="w-full border border-secondary-200 rounded-xl p-2.5 text-xs sm:text-sm focus:ring-2 focus:ring-beauty-400 outline-none">
+                    </div>
+                </div>
+
+                <!-- 📷 NATIVE PHONE GALLERY / CAMERA PHOTO PICKER (NO URL NEEDED!) -->
+                <div>
+                    <label class="block text-xs font-bold text-secondary-600 mb-1 flex items-center justify-between">
+                        <span>ကုန်ပစ္စည်း ဓာတ်ပုံ *</span>
+                        <span class="text-[10px] text-beauty-600 font-normal">Link မလိုဘဲ ဖုန်းထဲက ပုံတန်းရွေးနိုင်သည်</span>
+                    </label>
+                    
+                    <div class="border-2 border-dashed border-beauty-200 hover:border-beauty-400 rounded-2xl p-3 text-center cursor-pointer transition-colors bg-beauty-50/40 relative" id="dropArea">
+                        <input type="file" id="imageFileInput" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div id="uploadPrompt" class="space-y-1">
+                            <i class="fa-solid fa-camera text-2xl text-beauty-500"></i>
+                            <p class="text-xs font-bold text-beauty-700">📷 ဖုန်းထဲက ဓာတ်ပုံရွေးရန် နှိပ်ပါ</p>
+                            <p class="text-[10px] text-secondary-400">Gallery မှ ရွေးနိုင်သလို ကင်မရာဖြင့် တန်းရိုက်နိုင်ပါသည်</p>
+                        </div>
+                        <div id="imagePreviewContainer" class="hidden relative inline-block">
+                            <img id="imagePreview" src="" alt="Selected Photo" class="h-28 w-28 object-cover rounded-xl border-2 border-white shadow-md mx-auto">
+                            <span class="block text-[10px] text-emerald-600 font-bold mt-1">✔ ဓာတ်ပုံ အဆင်သင့်ဖြစ်ပါပြီ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optional URL Input if they already have an online image link -->
+                <div class="pt-1">
+                    <button type="button" id="btnToggleUrlMode" class="text-[11px] text-secondary-500 hover:text-beauty-600 underline font-semibold">
+                        သို့မဟုတ် ပုံ Link (URL) ထည့်သွင်းလိုပါက နှိပ်ပါ
+                    </button>
+                    <div id="urlInputContainer" class="hidden mt-1.5">
+                        <input type="url" id="addImageUrl" placeholder="https://images.unsplash.com/..." class="w-full border border-secondary-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-beauty-400 outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-secondary-600 mb-1">အမျိုးအစား (Category) *</label>
+                    <select id="addCategory" class="w-full border border-secondary-200 rounded-xl p-2.5 text-xs sm:text-sm focus:ring-2 focus:ring-beauty-400 outline-none bg-white">
+                        <option value="lip">💄 Lip & Makeup (နှုတ်ခမ်းနီနှင့် မိတ်ကပ်)</option>
+                        <option value="skincare">🧴 Skincare & Serums (မျက်နှာသစ်၊ ခရင်မ်နှင့် ဆီရမ်)</option>
+                        <option value="soap">🧼 Soaps & Masks (ကိုယ်တိုက်ဆပ်ပြာနှင့် ပေါင်းတင် Mask)</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="btnSubmitProduct" class="w-full bg-gradient-to-r from-beauty-500 to-rose-500 hover:from-beauty-600 hover:to-rose-600 text-white py-3 rounded-xl font-bold text-xs sm:text-sm mt-3 transition-all shadow-md btn-cute flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Firebase သို့ တိုက်ရိုက် ထည့်မည် ✨
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-20 right-4 z-[80] bg-beauty-600 text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-xs transform transition-all duration-300 translate-x-full opacity-0 flex items-center gap-2.5 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-sm"></i> <span id="toastMsg">Success</span>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3 pointer-events-none">
+        <div class="flex flex-col gap-2.5 pointer-events-auto">
+            <button id="btnScrollTop" class="hidden w-11 h-11 rounded-full bg-white text-secondary-700 shadow-lg border border-beauty-200 items-center justify-center hover:bg-beauty-50 transition-all btn-cute">
+                <i class="fa-solid fa-chevron-up text-sm"></i>
+            </button>
+            <a href="https://t.me/sweetbeautystudio" target="_blank" class="w-12 h-12 rounded-full bg-sky-500 text-white shadow-xl flex items-center justify-center text-xl hover:scale-110 active:scale-95 transition-transform" title="Telegram မှ ဆက်သွယ်မည်">
+                <i class="fa-brands fa-telegram"></i>
+            </a>
+            <a href="https://m.me/wan.ni.763260" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-blue-600 text-white shadow-xl flex items-center justify-center text-xl hover:scale-110 active:scale-95 transition-transform" title="Messenger မှ ဆက်သွယ်မည်">
+                <i class="fa-brands fa-facebook-messenger"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 11. FOOTER -->
+    <!-- ========================================== -->
+    <footer class="bg-white border-t border-beauty-100 pt-16 pb-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-2xl bg-[#f8b4c4] p-1 flex flex-col items-center justify-center text-center shadow-md">
+                            <span class="text-[8px] font-black text-[#8a3350] leading-none font-serif">SWEET</span>
+                            <span class="text-[7px] font-bold text-[#8a3350] leading-none mt-0.5">STUDIO</span>
+                        </div>
+                        <h2 class="text-xl font-black text-secondary-900 leading-[1.4]">Sweet Beauty Studio 🌸</h2>
+                    </div>
+                    <p class="text-xs text-secondary-500 leading-[1.85] mb-4">
+                        Authentic Skincare & Cosmetics Boutique။ အရည်အသွေးမြင့် အလှကုန်ပစ္စည်းများကို လက်လီ/လက်ကား ယုံကြည်စိတ်ချစွာ မှာယူနိုင်ပါသည်။
+                    </p>
+                    <div class="inline-flex items-center gap-2 bg-beauty-50 border border-beauty-200 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-beauty-700">
+                        <i class="fa-brands fa-telegram text-sky-500"></i> Order to Cb: @sweet_beautystudio
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-secondary-800 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-map-location-dot text-beauty-500"></i> ဆိုင်လိပ်စာနှင့် ဖုန်း
+                    </h3>
+                    <ul class="space-y-2.5 text-xs text-secondary-600 leading-[1.85]">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-brands fa-telegram text-sky-500 mt-1"></i>
+                            <a href="https://t.me/sweetbeautystudio" target="_blank" class="hover:text-sky-600 font-bold">t.me/sweetbeautystudio (@sweet_beautystudio)</a>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-phone text-beauty-500"></i>
+                            <a href="tel:09692575107" class="hover:text-beauty-600 font-bold text-secondary-700">09-692575107</a>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-brands fa-facebook text-blue-600"></i>
+                            <a href="https://www.facebook.com/100066820013034" target="_blank" class="hover:text-blue-600 font-bold text-secondary-700">Sweet Beauty Studio Facebook Page</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-secondary-800 mb-4">တိုက်ရိုက် မှာယူဆက်သွယ်ရန်</h3>
+                    <div class="flex flex-col gap-2.5">
+                        <a href="https://t.me/sweetbeautystudio" target="_blank" class="w-full inline-flex items-center justify-center gap-2.5 bg-sky-500 hover:bg-sky-600 text-white py-2.5 px-4 rounded-xl font-bold text-xs shadow-sm btn-cute">
+                            <i class="fa-brands fa-telegram text-base"></i> Telegram တွင် မှာမည်
+                        </a>
+                        <a href="https://m.me/wan.ni.763260" target="_blank" class="w-full inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl font-bold text-xs shadow-sm btn-cute">
+                            <i class="fa-brands fa-facebook-messenger text-base"></i> Messenger မှ မေးမည်
+                        </a>
+                        <a href="tel:09692575107" class="w-full inline-flex items-center justify-center gap-2.5 bg-rose-600 hover:bg-rose-700 text-white py-2 px-4 rounded-xl font-bold text-xs shadow-sm btn-cute">
+                            <i class="fa-solid fa-phone text-base"></i> ဖုန်း 09-692575107
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-beauty-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-secondary-400">
+                <p>&copy; 2026 Sweet Beauty Studio. All rights reserved.</p>
+                <div class="flex items-center gap-4">
+                    <button onclick="openAdmin()" class="hover:text-beauty-600 font-bold text-secondary-500 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lock text-xs"></i> Admin Panel
+                    </button>
+                    <span class="text-slate-200">|</span>
+                    <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="hover:text-beauty-600 font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-up"></i> ထိပ်ဆုံးသို့
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- 12. SCRIPTS & LOGIC (FIREBASE INTEGRATED) -->
+    <!-- ========================================== -->
+    <script>
+        // ==========================================
+        // FIREBASE INITIALIZATION WITH USER CONFIG
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCHlKFmAy1tJEx0Ezd5u7bSfGaer3DK9w4",
+            authDomain: "newshop-81c17.firebaseapp.com",
+            projectId: "newshop-81c17",
+            storageBucket: "newshop-81c17.firebasestorage.app",
+            messagingSenderId: "698167310899",
+            appId: "1:698167310899:web:8856edda70a7c925d34146",
+            measurementId: "G-T4EJDS18J3"
+        };
+
+        // Initialize Firebase Compat
+        let db = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            console.log("Firebase Firestore initialized successfully!");
+        } catch (e) {
+            console.error("Firebase initialization error:", e);
+        }
+
+        // Contact Links as requested
+        const TELEGRAM_SHOP_LINK = "https://t.me/sweetbeautystudio";
+        const MESSENGER_USER_LINK = "https://m.me/wan.ni.763260";
+        const SHOP_PHONE = "09692575107";
+        const DEFAULT_ADMIN_PIN = "8888";
+
+        // Initial Seed Demo Products for Sweet Beauty Studio
+        const INITIAL_DEMO_PRODUCTS = [
+            {
+                id: "demo-1",
+                name: "Mistine Liquid Lip Gloss Tint (Cherry Red)",
+                retail_price: "9,000 Ks",
+                wholesale_price: "26,500 Ks (၃ ခုပါ)",
+                image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800",
+                category: "lip",
+                tag: "🔥 Best Seller",
+                isDemo: true
+            },
+            {
+                id: "demo-2",
+                name: "Natural Whitening & Brightening Facial Soap (Handmade)",
+                retail_price: "6,500 Ks",
+                wholesale_price: "18,000 Ks (၃ တုံးပါ)",
+                image_url: "https://images.unsplash.com/photo-1607006314605-4b143c7b6059?w=800",
+                category: "soap",
+                tag: "🌸 Organic Soap",
+                isDemo: true
+            },
+            {
+                id: "demo-3",
+                name: "Moisturizing & Hydrating Sheet Mask (Aloe & Pearl)",
+                retail_price: "3,500 Ks",
+                wholesale_price: "30,000 Ks (၁၀ ချပ်ပါ)",
+                image_url: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800",
+                category: "soap",
+                tag: "✨ Glowing Skin",
+                isDemo: true
+            },
+            {
+                id: "demo-4",
+                name: "Hyaluronic Acid Hydrating Glow Serum (30ml)",
+                retail_price: "18,500 Ks",
+                wholesale_price: "16,000 Ks (လက်ကား)",
+                image_url: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800",
+                category: "skincare",
+                tag: "⭐ Premium Care",
+                isDemo: true
+            }
+        ];
+
+        // State Management
+        let allProducts = [];
+        let cart = JSON.parse(localStorage.getItem('sweet_beauty_cart') || '[]');
+        let favorites = JSON.parse(localStorage.getItem('sweet_beauty_favs') || '[]');
+        let currentSort = 'default';
+        let isOnlyFavs = false;
+        let selectedBase64Image = "";
+
+        // Welcome Splash Logic
+        const splashScreen = document.getElementById('splashScreen');
+        const splashProgress = document.getElementById('splashProgress');
+        const splashIcon = document.getElementById('splashIcon');
+        const btnEnterStore = document.getElementById('btnEnterStore');
+
+        function triggerSplashAnimation() {
+            if (!splashScreen) return;
+            splashScreen.classList.remove('fade-out');
+            if (splashProgress) splashProgress.style.width = '0%';
+            if (splashIcon) splashIcon.style.left = '0%';
+
+            setTimeout(() => {
+                if (splashProgress) splashProgress.style.width = '100%';
+                if (splashIcon) splashIcon.style.left = 'calc(100% - 20px)';
+            }, 50);
+
+            const autoTimer = setTimeout(() => {
+                dismissSplash();
+            }, 2600);
+
+            const closeNow = () => {
+                clearTimeout(autoTimer);
+                dismissSplash();
+            };
+
+            if (btnEnterStore) btnEnterStore.onclick = closeNow;
+            if (splashScreen) {
+                splashScreen.onclick = (e) => {
+                    if (e.target === splashScreen) closeNow();
+                };
+            }
+        }
+
+        function dismissSplash() {
+            if (!splashScreen) return;
+            splashScreen.classList.add('fade-out');
+            showToast('Sweet Beauty Studio မှ ကြိုဆိုပါတယ်ရှင့် 🌸');
+        }
+
+        // ==========================================
+        // 📷 NATIVE GALLERY IMAGE PICKER & COMPRESSION
+        // ==========================================
+        const imageFileInput = document.getElementById('imageFileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const uploadPrompt = document.getElementById('uploadPrompt');
+        const btnToggleUrlMode = document.getElementById('btnToggleUrlMode');
+        const urlInputContainer = document.getElementById('urlInputContainer');
+
+        if (btnToggleUrlMode && urlInputContainer) {
+            btnToggleUrlMode.onclick = () => {
+                urlInputContainer.classList.toggle('hidden');
+            };
+        }
+
+        if (imageFileInput) {
+            imageFileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Client-side instant preview & canvas compression (50-80KB WebP/JPEG)
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 700;
+                        const MAX_HEIGHT = 700;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Compress to efficient base64
+                        selectedBase64Image = canvas.toDataURL('image/jpeg', 0.82);
+
+                        // Show preview
+                        imagePreview.src = selectedBase64Image;
+                        imagePreviewContainer.classList.remove('hidden');
+                        uploadPrompt.classList.add('hidden');
+                        showToast("ဓာတ်ပုံ ရွေးချယ်ပြီးပါပြီ 📷");
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Mobile Nav Drawer Toggle
+        const btnMobileNavToggle = document.getElementById('btnMobileNavToggle');
+        const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+        if (btnMobileNavToggle && mobileNavDrawer) {
+            btnMobileNavToggle.onclick = () => {
+                mobileNavDrawer.classList.toggle('hidden');
+            };
+            mobileNavDrawer.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('click', () => {
+                    mobileNavDrawer.classList.add('hidden');
+                });
+            });
+        }
+
+        // Delivery Modal
+        const deliveryModal = document.getElementById('deliveryModal');
+        const btnOpenDeliveryGuide = document.getElementById('btnOpenDeliveryGuide');
+        const btnOpenDeliveryGuideMobile = document.getElementById('btnOpenDeliveryGuideMobile');
+        const btnHeroDeliveryInfo = document.getElementById('btnHeroDeliveryInfo');
+
+        function openDeliveryModal() {
+            if (deliveryModal) {
+                deliveryModal.classList.remove('hidden');
+                deliveryModal.classList.add('flex');
+            }
+        }
+        function closeDeliveryModal() {
+            if (deliveryModal) {
+                deliveryModal.classList.add('hidden');
+                deliveryModal.classList.remove('flex');
+            }
+        }
+        if (btnOpenDeliveryGuide) btnOpenDeliveryGuide.onclick = openDeliveryModal;
+        if (btnOpenDeliveryGuideMobile) btnOpenDeliveryGuideMobile.onclick = openDeliveryModal;
+        if (btnHeroDeliveryInfo) btnHeroDeliveryInfo.onclick = openDeliveryModal;
+
+        // Product Detail Modal
+        const productDetailModal = document.getElementById('productDetailModal');
+        const detailModalImage = document.getElementById('detailModalImage');
+        const detailModalCategory = document.getElementById('detailModalCategory');
+        const detailModalName = document.getElementById('detailModalName');
+        const detailModalRetail = document.getElementById('detailModalRetail');
+        const detailModalWholesale = document.getElementById('detailModalWholesale');
+        const btnDetailAddToCart = document.getElementById('btnDetailAddToCart');
+
+        let selectedDetailProduct = null;
+
+        function openProductDetail(product) {
+            selectedDetailProduct = product;
+            if (!product || !productDetailModal) return;
+
+            detailModalImage.src = product.image_url;
+            detailModalCategory.innerText = (product.category || 'beauty').toUpperCase();
+            detailModalName.innerText = product.name;
+            detailModalRetail.innerText = product.retail_price;
+            detailModalWholesale.innerText = product.wholesale_price;
+
+            productDetailModal.classList.remove('hidden');
+            productDetailModal.classList.add('flex');
+        }
+
+        function closeProductDetail() {
+            if (productDetailModal) {
+                productDetailModal.classList.add('hidden');
+                productDetailModal.classList.remove('flex');
+            }
+        }
+
+        if (btnDetailAddToCart) {
+            btnDetailAddToCart.onclick = () => {
+                if (selectedDetailProduct) {
+                    addToCart(selectedDetailProduct);
+                }
+            };
+        }
+
+        // Favorites / Wishlist Logic
+        function toggleFavorite(name, e) {
+            if (e) e.stopPropagation();
+            const idx = favorites.indexOf(name);
+            if (idx > -1) {
+                favorites.splice(idx, 1);
+                showToast(`"${name}" ကို အကြိုက်ဆုံးမှ ဖယ်ရှားလိုက်ပါပြီ`);
+            } else {
+                favorites.push(name);
+                showToast(`"${name}" ကို အကြိုက်ဆုံးထဲ ထည့်ပြီးပါပြီ 💖`);
+            }
+            localStorage.setItem('sweet_beauty_favs', JSON.stringify(favorites));
+            updateFavBadges();
+            applySearchAndFilter();
+        }
+
+        function updateFavBadges() {
+            const b = document.getElementById('favBadgeCount');
+            if (b) b.innerText = favorites.length;
+        }
+
+        const btnFilterFavs = document.getElementById('btnFilterFavs');
+        if (btnFilterFavs) {
+            btnFilterFavs.onclick = () => {
+                isOnlyFavs = !isOnlyFavs;
+                if (isOnlyFavs) {
+                    btnFilterFavs.classList.remove('bg-white', 'text-rose-600');
+                    btnFilterFavs.classList.add('bg-rose-500', 'text-white');
+                } else {
+                    btnFilterFavs.classList.remove('bg-rose-500', 'text-white');
+                    btnFilterFavs.classList.add('bg-white', 'text-rose-600');
+                }
+                applySearchAndFilter();
+            };
+        }
+
+        // Category Counters Update
+        function updateCategoryCounters() {
+            const countAll = document.getElementById('countAll');
+            const countLip = document.getElementById('countLip');
+            const countSkin = document.getElementById('countSkin');
+            const countSoap = document.getElementById('countSoap');
+
+            if (countAll) countAll.innerText = allProducts.length;
+            if (countLip) countLip.innerText = allProducts.filter(p => (p.category || '').toLowerCase() === 'lip').length;
+            if (countSkin) countSkin.innerText = allProducts.filter(p => (p.category || '').toLowerCase() === 'skincare').length;
+            if (countSoap) countSoap.innerText = allProducts.filter(p => (p.category || '').toLowerCase() === 'soap').length;
+        }
+
+        // ==========================================
+        // REAL-TIME FIRESTORE DATA STREAM
+        // ==========================================
+        function renderSkeletons() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = Array(4).fill(`
+                <div class="glass-card rounded-3xl overflow-hidden p-4 border border-beauty-100 shadow-sm space-y-3">
+                    <div class="h-48 rounded-2xl skeleton"></div>
+                    <div class="h-4 w-1/3 skeleton rounded-lg"></div>
+                    <div class="h-5 w-3/4 skeleton rounded-lg"></div>
+                    <div class="h-12 w-full skeleton rounded-xl"></div>
+                    <div class="h-10 w-full skeleton rounded-xl"></div>
+                </div>
+            `).join('');
+        }
+
+        function listenToProducts() {
+            renderSkeletons();
+
+            if (!db) {
+                console.warn("Firestore not available, using offline demo items");
+                allProducts = [...INITIAL_DEMO_PRODUCTS];
+                renderProducts(allProducts);
+                updateCategoryCounters();
+                return;
+            }
+
+            // Real-time Firestore sync on 'products' collection
+            db.collection('products').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+                const liveItems = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    liveItems.push({
+                        id: doc.id,
+                        ...data
+                    });
+                });
+
+                if (liveItems.length > 0) {
+                    allProducts = liveItems;
+                } else {
+                    // Show initial demo sample if database is freshly empty
+                    allProducts = [...INITIAL_DEMO_PRODUCTS];
+                }
+
+                renderProducts(allProducts);
+                updateCategoryCounters();
+            }, (error) => {
+                console.error("Firestore listen error:", error);
+                allProducts = [...INITIAL_DEMO_PRODUCTS];
+                renderProducts(allProducts);
+                updateCategoryCounters();
+            });
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            
+            const counterText = document.getElementById('productCounterText');
+
+            if (products.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 px-4 text-center">
+                        <div class="w-20 h-20 rounded-3xl bg-pink-100 text-beauty-500 mx-auto flex items-center justify-center text-3xl mb-4 shadow-sm animate-bounce-soft">
+                            <i class="fa-solid fa-boxes-packing"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-secondary-800 mb-1 leading-[1.6]">ပစ္စည်းစာရင်း မရှိသေးပါရှင့် 🌸</h4>
+                        <p class="text-xs text-secondary-500 max-w-md mx-auto mb-6 leading-[1.85]">
+                            Admin Panel မှတဆင့် ကုန်ပစ္စည်းအသစ်များကို အလွယ်တကူ စတင်ထည့်သွင်းနိုင်ပါပြီရှင့် 💕
+                        </p>
+                        <button onclick="openAdmin()" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-beauty-500 to-rose-500 text-white font-bold text-xs shadow-lg shadow-beauty-500/25 btn-cute">
+                            <i class="fa-solid fa-circle-plus"></i>
+                            <span>+ ပစ္စည်းအသစ် ထည့်မည် (Admin Panel)</span>
+                        </button>
+                    </div>
+                `;
+                if (counterText) counterText.innerText = 'တွေ့ရှိသော ပစ္စည်း (၀) မျိုး';
+                return;
+            }
+
+            document.getElementById('noResults').classList.add('hidden');
+            if (counterText) counterText.innerText = `တွေ့ရှိသော ပစ္စည်း (${products.length}) မျိုး 🌸`;
+
+            products.forEach((p) => {
+                const name = p.name || 'Beauty Product';
+                const retail = p.retail_price || '-';
+                const wholesale = p.wholesale_price || '-';
+                const image = p.image_url || 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800';
+                const cat = (p.category || 'lip').toLowerCase();
+                const tag = p.tag || '🌸 Ready Stock';
+
+                const cleanPrice = parseFloat(String(retail).replace(/[^0-9.]/g, '')) || 0;
+                const isFav = favorites.includes(name);
+
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-3xl overflow-hidden group flex flex-col transition-all hover:-translate-y-1.5 hover:shadow-xl hover:shadow-beauty-500/20";
+                card.setAttribute('data-category', cat);
+                card.setAttribute('data-price', cleanPrice);
+
+                card.innerHTML = `
+                    <div class="h-52 sm:h-56 overflow-hidden relative p-3 pb-0 cursor-pointer card-image-wrap">
+                        <img src="${image}" alt="${name}" onerror="this.src='https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800'" class="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-5 right-5 bg-white/95 backdrop-blur-md text-beauty-600 text-[10px] font-black px-3 py-1 rounded-full shadow-xs border border-beauty-100 uppercase tracking-wider">${cat}</span>
+                        <!-- Favorite Heart Button -->
+                        <button class="btn-card-fav absolute top-5 left-5 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md transition-transform hover:scale-110 active:scale-95 z-10" title="အကြိုက်ဆုံး မှတ်မည်">
+                            <i class="fa-solid fa-heart text-xs ${isFav ? 'text-rose-500' : 'text-slate-300'}"></i>
+                        </button>
+                        <div class="absolute inset-0 bg-beauty-900/15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl">
+                            <span class="bg-white/95 text-beauty-600 text-xs font-bold px-3.5 py-1.5 rounded-xl shadow-md flex items-center gap-1.5">
+                                <i class="fa-solid fa-eye"></i> အသေးစိတ်ကြည့်ရန်
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[10px] font-bold text-beauty-700 bg-beauty-50 px-2.5 py-0.5 rounded-full border border-beauty-200">
+                                    ${tag}
+                                </span>
+                                <span class="text-[10px] font-bold text-emerald-600">
+                                    <i class="fa-solid fa-circle text-[7px] text-emerald-500 mr-1"></i>In Stock
+                                </span>
+                            </div>
+                            <h3 class="font-bold text-secondary-800 text-sm mb-3 line-clamp-2 leading-[1.6] cursor-pointer hover:text-beauty-600 transition-colors card-title-click">${name}</h3>
+                            <div class="bg-beauty-50/70 rounded-2xl p-3 mb-4 border border-beauty-100/70 space-y-1">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] font-bold text-secondary-500">Retail ဈေး:</span>
+                                    <span class="text-xs font-black text-beauty-600">${retail}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] font-bold text-secondary-500">Wholesale:</span>
+                                    <span class="text-xs font-black text-secondary-900">${wholesale}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <button class="btn-card-add w-full py-2.5 rounded-xl bg-gradient-to-r from-beauty-50 to-pink-100 hover:from-beauty-500 hover:to-rose-500 text-beauty-600 hover:text-white border border-beauty-200 hover:border-transparent font-bold text-xs transition-all flex items-center justify-center gap-2 btn-cute shadow-xs min-h-[42px]">
+                                <i class="fa-solid fa-plus text-xs"></i> စာရင်းထဲထည့်မည် 💕
+                            </button>
+
+                            <!-- Direct Fast Action Links -->
+                            <div class="grid grid-cols-2 gap-1.5 pt-1 border-t border-beauty-100/60">
+                                <a href="${TELEGRAM_SHOP_LINK}" target="_blank" class="py-2 rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-500 hover:text-white text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all" title="Telegram Cb">
+                                    <i class="fa-brands fa-telegram text-sm"></i> <span>Telegram Cb</span>
+                                </a>
+                                <a href="${MESSENGER_USER_LINK}" target="_blank" class="py-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all" title="Messenger">
+                                    <i class="fa-brands fa-facebook-messenger text-sm"></i> <span>Messenger</span>
+                                </a>
+                            </div>
+
+                            <!-- Delete button if Admin unlocked -->
+                            ${sessionStorage.getItem('sweet_admin_auth') === 'true' && !p.isDemo ? `
+                                <button class="btn-card-delete w-full mt-1 py-1 text-[11px] text-rose-500 hover:text-rose-700 font-bold flex items-center justify-center gap-1 bg-rose-50 rounded-lg">
+                                    <i class="fa-solid fa-trash-can text-xs"></i> ပစ္စည်းဖျက်မည် (Delete)
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                card.querySelector('.card-image-wrap').onclick = () => openProductDetail(p);
+                card.querySelector('.card-title-click').onclick = () => openProductDetail(p);
+                card.querySelector('.btn-card-fav').onclick = (e) => toggleFavorite(name, e);
+                card.querySelector('.btn-card-add').onclick = () => addToCart(p);
+
+                const deleteBtn = card.querySelector('.btn-card-delete');
+                if (deleteBtn && p.id && db) {
+                    deleteBtn.onclick = async () => {
+                        if (confirm(`"${name}" ကို Firebase Database ထဲမှ အပြီးဖျက်ပါမည်လား?`)) {
+                            try {
+                                await db.collection('products').doc(p.id).delete();
+                                showToast(`"${name}" ကို ဖျက်ပြီးပါပြီ ✨`);
+                            } catch (err) {
+                                alert("Error deleting: " + err);
+                            }
+                        }
+                    };
+                }
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Search & Filter
+        const searchInput = document.getElementById('searchInput');
+        const btnClearSearch = document.getElementById('btnClearSearch');
+        const btnResetSearch = document.getElementById('btnResetSearch');
+        const sortSelect = document.getElementById('sortSelect');
+
+        function applySearchAndFilter() {
+            const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+            const activeBtn = document.querySelector('.filter-btn.active');
+            const activeCat = activeBtn ? activeBtn.dataset.category : 'all';
+            
+            if (query.length > 0) {
+                if (btnClearSearch) btnClearSearch.classList.remove('hidden');
+            } else {
+                if (btnClearSearch) btnClearSearch.classList.add('hidden');
+            }
+
+            let filtered = allProducts.filter(p => {
+                const name = (p.name || '').toLowerCase();
+                const cat = (p.category || 'lip').toLowerCase();
+                
+                const matchSearch = name.includes(query);
+                const matchCat = activeCat === 'all' || cat === activeCat;
+                const matchFav = !isOnlyFavs || favorites.includes(p.name);
+                return matchSearch && matchCat && matchFav;
+            });
+
+            if (currentSort === 'name-asc') {
+                filtered.sort((a, b) => {
+                    const nameA = (a.name || '').toLowerCase();
+                    const nameB = (b.name || '').toLowerCase();
+                    return nameA.localeCompare(nameB, 'my');
+                });
+            } else if (currentSort === 'price-asc' || currentSort === 'price-desc') {
+                filtered.sort((a, b) => {
+                    const priceA = parseFloat(String(a.retail_price || 0).replace(/[^0-9.]/g, '')) || 0;
+                    const priceB = parseFloat(String(b.retail_price || 0).replace(/[^0-9.]/g, '')) || 0;
+                    return currentSort === 'price-asc' ? (priceA - priceB) : (priceB - priceA);
+                });
+            }
+
+            renderProducts(filtered);
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', applySearchAndFilter);
+        }
+
+        if (btnClearSearch) {
+            btnClearSearch.onclick = () => {
+                searchInput.value = '';
+                applySearchAndFilter();
+                searchInput.focus();
+            };
+        }
+
+        if (btnResetSearch) {
+            btnResetSearch.onclick = () => {
+                if (searchInput) searchInput.value = '';
+                isOnlyFavs = false;
+                if (btnFilterFavs) {
+                    btnFilterFavs.classList.remove('bg-rose-500', 'text-white');
+                    btnFilterFavs.classList.add('bg-white', 'text-rose-600');
+                }
+                const allBtn = document.querySelector('.filter-btn[data-category="all"]');
+                if (allBtn) allBtn.click();
+            };
+        }
+
+        if (sortSelect) {
+            sortSelect.addEventListener('change', () => {
+                currentSort = sortSelect.value;
+                applySearchAndFilter();
+            });
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('bg-beauty-500', 'text-white', 'shadow-md', 'active');
+                    b.classList.add('bg-white', 'text-secondary-600', 'border-beauty-200');
+                });
+                const t = e.currentTarget;
+                t.classList.remove('bg-white', 'text-secondary-600', 'border-beauty-200');
+                t.classList.add('bg-beauty-500', 'text-white', 'shadow-md', 'active');
+                
+                applySearchAndFilter();
+            });
+        });
+
+        // Cart Basket
+        function addToCart(p) {
+            if (!p) return;
+            const name = p.name;
+            const existing = cart.find(i => i.name === name);
+            
+            if(existing) existing.qty += 1;
+            else cart.push({ 
+                name: name, 
+                retail: p.retail_price || '-', 
+                wholesale: p.wholesale_price || '-', 
+                image: p.image_url, 
+                qty: 1 
+            });
+            
+            localStorage.setItem('sweet_beauty_cart', JSON.stringify(cart));
+            updateCartUI();
+            showToast(`🛒 "${name}" ကို စာရင်းထဲ ထည့်ပြီးပါပြီ 💕`);
+            
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                badge.classList.remove('animate-bounce-soft');
+                void badge.offsetWidth;
+                badge.classList.add('animate-bounce-soft');
+            }
+        }
+
+        function updateCartUI() {
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const badge = document.getElementById('cartBadge');
+            if (badge) badge.innerText = totalQty;
+
+            const cartCountSummary = document.getElementById('cartCountSummary');
+            if (cartCountSummary) cartCountSummary.innerText = totalQty;
+
+            const cartTotalCount = document.getElementById('cartTotalCount');
+            if (cartTotalCount) cartTotalCount.innerText = `${cart.length} မျိုး (${totalQty} ခု)`;
+            
+            // Calculate Estimated Total
+            let estTotal = 0;
+            cart.forEach(item => {
+                const p = parseFloat(String(item.retail).replace(/[^0-9.]/g, '')) || 0;
+                estTotal += (p * item.qty);
+            });
+            const estPriceEl = document.getElementById('cartEstimatedPrice');
+            if (estPriceEl) estPriceEl.innerText = `${estTotal.toLocaleString()} Ks`;
+
+            const container = document.getElementById('cartItems');
+            if(!container) return;
+
+            if(cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-secondary-400 text-xs font-bold leading-[1.85]">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 block text-beauty-200"></i>
+                        <span>မှာယူမည့် စာရင်းလွတ်နေပါသည်ရှင့် 🌸</span>
+                        <p class="text-[11px] text-secondary-400 mt-1 font-normal">လိုချင်သော ပစ္စည်းများအောက်ရှိ "+ စာရင်းထဲထည့်မည်" ကို နှိပ်ပါ</p>
+                    </div>`;
+                return;
+            }
+            
+            container.innerHTML = cart.map((item, i) => `
+                <div class="bg-white p-3 rounded-2xl shadow-xs border border-beauty-100 flex gap-3 items-center">
+                    <img src="${item.image}" onerror="this.src='https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800'" class="w-14 h-14 rounded-xl object-cover shrink-0 border border-beauty-50">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-secondary-800 truncate">${item.name}</h4>
+                        <p class="text-[11px] text-beauty-600 font-bold mt-0.5">လက်လီ: ${item.retail}</p>
+                        <p class="text-[10px] text-rose-500 font-semibold">လက်ကား: ${item.wholesale}</p>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-beauty-50/70 rounded-xl p-1 shrink-0">
+                        <button onclick="changeQty(${i}, -1)" class="w-6 h-6 rounded-lg bg-white text-secondary-600 shadow-xs text-xs font-bold hover:bg-beauty-100">-</button>
+                        <span class="text-xs font-bold w-4 text-center text-secondary-800">${item.qty}</span>
+                        <button onclick="changeQty(${i}, 1)" class="w-6 h-6 rounded-lg bg-white text-secondary-600 shadow-xs text-xs font-bold hover:bg-beauty-100">+</button>
+                        <button onclick="changeQty(${i}, -999)" class="ml-1 text-secondary-400 hover:text-rose-500 text-xs p-1" title="ဖျက်မည်"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function changeQty(index, delta) {
+            if (delta === -999) {
+                cart.splice(index, 1);
+            } else {
+                cart[index].qty += delta;
+                if(cart[index].qty <= 0) cart.splice(index, 1);
+            }
+            localStorage.setItem('sweet_beauty_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function openCart() {
+            const drawer = document.getElementById('cartDrawer');
+            const panel = document.getElementById('cartPanel');
+            if (drawer && panel) {
+                drawer.classList.remove('hidden');
+                setTimeout(() => {
+                    panel.classList.remove('translate-x-full');
+                }, 10);
+            }
+        }
+
+        function closeCart() {
+            const drawer = document.getElementById('cartDrawer');
+            const panel = document.getElementById('cartPanel');
+            if (drawer && panel) {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    drawer.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function generateOrderText() {
+            if(cart.length === 0) return '';
+            let text = `မင်္ဂလာပါ Sweet Beauty Studio၊ အောက်ပါပစ္စည်းများ စုံစမ်း/မှာယူလိုပါသည်ရှင့် 🌸-\n\n`;
+
+            let estTotal = 0;
+            cart.forEach((item, i) => {
+                const p = parseFloat(String(item.retail).replace(/[^0-9.]/g, '')) || 0;
+                estTotal += (p * item.qty);
+                text += `${i+1}. ${item.name} - (${item.qty}) ခု\n   [ဈေးနှုန်း: ${item.retail}]\n`;
+            });
+
+            if (estTotal > 0) {
+                text += `\n💰 ခန့်မှန်း စုစုပေါင်း ကျသင့်ငွေ: ${estTotal.toLocaleString()} Ks\n`;
+            }
+
+            const remark = document.getElementById('orderRemarkInput')?.value.trim();
+            if (remark) {
+                text += `📝 ပို့ရမည့်လိပ်စာ/မှတ်ချက်: ${remark}\n`;
+            }
+
+            text += `\nကျေးဇူးပြု၍ ပစ္စည်းရရှိနိုင်မှု အတည်ပြုပေးပါရှင့် 💕`;
+            return text;
+        }
+
+        function orderViaTelegram() {
+            const txt = generateOrderText();
+            if(!txt) return showToast('မှာယူမည့် စာရင်းလွတ်နေပါသည်ရှင့်');
+            navigator.clipboard.writeText(txt).then(() => {
+                showToast('စာရင်းကို ကူးယူပြီး Telegram ဖွင့်ပေးပါမည်...');
+                window.open(TELEGRAM_SHOP_LINK, '_blank');
+            }).catch(() => {
+                window.open(TELEGRAM_SHOP_LINK, '_blank');
+            });
+        }
+
+        function orderViaMessenger() {
+            const txt = generateOrderText();
+            if(!txt) return showToast('မှာယူမည့် စာရင်းလွတ်နေပါသည်ရှင့်');
+            navigator.clipboard.writeText(txt).then(() => {
+                showToast('စာရင်းကို ကူးယူပြီး Messenger ဖွင့်ပေးပါမည်...');
+                window.open(MESSENGER_USER_LINK, '_blank');
+            }).catch(() => {
+                window.open(MESSENGER_USER_LINK, '_blank');
+            });
+        }
+
+        function copyOrderList() {
+            const txt = generateOrderText();
+            if(!txt) return showToast('မှာယူမည့် စာရင်းလွတ်နေပါသည်ရှင့်');
+            navigator.clipboard.writeText(txt).then(() => {
+                showToast('မှာယူမည့်စာရင်းကို အောင်မြင်စွာ Copy ယူပြီးပါပြီ ✨');
+            });
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            if (t && toastMsg) {
+                toastMsg.innerText = msg;
+                t.classList.remove('translate-x-full', 'opacity-0');
+                setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 2800);
+            }
+        }
+
+        // ==========================================
+        // 3. ADMIN SECURITY PIN & PANEL LOGIC
+        // ==========================================
+        const adminPinModal = document.getElementById('adminPinModal');
+        const adminPinForm = document.getElementById('adminPinForm');
+        const adminPinInput = document.getElementById('adminPinInput');
+        const adminPinError = document.getElementById('adminPinError');
+        const btnTogglePinVisibility = document.getElementById('btnTogglePinVisibility');
+        const pinEyeIcon = document.getElementById('pinEyeIcon');
+        const adminModal = document.getElementById('adminModal');
+
+        if (btnTogglePinVisibility && adminPinInput && pinEyeIcon) {
+            btnTogglePinVisibility.onclick = () => {
+                if (adminPinInput.type === 'password') {
+                    adminPinInput.type = 'text';
+                    pinEyeIcon.classList.remove('fa-eye');
+                    pinEyeIcon.classList.add('fa-eye-slash');
+                } else {
+                    adminPinInput.type = 'password';
+                    pinEyeIcon.classList.remove('fa-eye-slash');
+                    pinEyeIcon.classList.add('fa-eye');
+                }
+            };
+        }
+
+        function openAdmin() {
+            const isAuth = sessionStorage.getItem('sweet_admin_auth') === 'true';
+            if (isAuth) {
+                showAdminModal();
+            } else {
+                openAdminPinModal();
+            }
+        }
+
+        function openAdminPinModal() {
+            if (adminPinModal) {
+                adminPinModal.classList.remove('hidden');
+                adminPinModal.classList.add('flex');
+                if (adminPinInput) {
+                    adminPinInput.value = '';
+                    setTimeout(() => adminPinInput.focus(), 150);
+                }
+                if (adminPinError) adminPinError.classList.add('hidden');
+            }
+        }
+
+        function closeAdminPinModal() {
+            if (adminPinModal) {
+                adminPinModal.classList.add('hidden');
+                adminPinModal.classList.remove('flex');
+                if (adminPinInput) adminPinInput.value = '';
+                if (adminPinError) adminPinError.classList.add('hidden');
+            }
+        }
+
+        function showAdminModal() {
+            if (adminModal) {
+                adminModal.classList.remove('hidden');
+                adminModal.classList.add('flex');
+            }
+        }
+
+        function closeAdmin() {
+            if (adminModal) {
+                adminModal.classList.add('hidden');
+                adminModal.classList.remove('flex');
+            }
+        }
+
+        function lockAdminSession() {
+            sessionStorage.removeItem('sweet_admin_auth');
+            closeAdmin();
+            renderProducts(allProducts); // Re-render to hide delete buttons
+            showToast('Admin Panel ကို ပြန်လည် Lock ပြုလုပ်လိုက်ပါပြီ 🔒');
+        }
+
+        if (adminPinForm) {
+            adminPinForm.onsubmit = (e) => {
+                e.preventDefault();
+                const enteredPin = (adminPinInput.value || '').trim();
+                const currentSavedPin = localStorage.getItem('sweet_custom_pin') || DEFAULT_ADMIN_PIN;
+
+                if (enteredPin === currentSavedPin) {
+                    sessionStorage.setItem('sweet_admin_auth', 'true');
+                    closeAdminPinModal();
+                    showAdminModal();
+                    renderProducts(allProducts); // Re-render to show delete buttons
+                    showToast('Admin Security Access ခွင့်ပြုပြီးပါပြီ ✨');
+                } else {
+                    if (adminPinError) {
+                        adminPinError.classList.remove('hidden');
+                        adminPinError.classList.remove('animate-shake');
+                        void adminPinError.offsetWidth;
+                        adminPinError.classList.add('animate-shake');
+                    }
+                    if (adminPinInput) {
+                        adminPinInput.classList.add('border-rose-400');
+                        adminPinInput.focus();
+                    }
+                }
+            };
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if(e.ctrlKey && e.shiftKey && e.key === 'A') {
+                openAdmin();
+            }
+        });
+
+        // ==========================================
+        // SUBMITTING NEW PRODUCT (SAVE TO FIRESTORE)
+        // ==========================================
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitProduct');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Firebase သို့ သိမ်းဆည်းနေပါသည်...`;
+            btn.disabled = true;
+
+            const name = document.getElementById('addName').value.trim();
+            const retail_price = document.getElementById('addRetail').value.trim();
+            const wholesale_price = document.getElementById('addWholesale').value.trim();
+            const category = document.getElementById('addCategory').value.trim();
+            
+            // Image priority: 1. Native Gallery Base64, 2. URL input, 3. Default beauty photo
+            const manualUrl = document.getElementById('addImageUrl')?.value.trim();
+            const finalImage = selectedBase64Image || manualUrl || 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800';
+
+            const newProductData = {
+                name: name,
+                retail_price: retail_price,
+                wholesale_price: wholesale_price,
+                image_url: finalImage,
+                category: category,
+                tag: '✨ New Arrival',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                if (db) {
+                    // Direct Save into Firestore collection
+                    await db.collection('products').add(newProductData);
+                    showToast(`"${name}" ကို Firebase သို့ အောင်မြင်စွာ ထည့်သွင်းပြီးပါပြီ ✨`);
+                } else {
+                    allProducts.unshift({ id: 'local-' + Date.now(), ...newProductData });
+                    renderProducts(allProducts);
+                    updateCategoryCounters();
+                    showToast(`"${name}" ကို ပစ္စည်းစာရင်းတွင် ထည့်သွင်းပြီးပါပြီ`);
+                }
+
+                // Reset Form
+                e.target.reset();
+                selectedBase64Image = "";
+                if (imagePreviewContainer) imagePreviewContainer.classList.add('hidden');
+                if (uploadPrompt) uploadPrompt.classList.remove('hidden');
+                closeAdmin();
+            } catch (error) {
+                console.error("Firestore save error:", error);
+                alert("Firebase သို့ သိမ်းဆည်းရာတွင် အမှားဖြစ်ပေါ်ပါသည်: " + error.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Scroll to Top
+        const btnScrollTop = document.getElementById('btnScrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 350) {
+                if (btnScrollTop) {
+                    btnScrollTop.classList.remove('hidden');
+                    btnScrollTop.classList.add('flex');
+                }
+            } else {
+                if (btnScrollTop) {
+                    btnScrollTop.classList.add('hidden');
+                    btnScrollTop.classList.remove('flex');
+                }
+            }
+        });
+        if (btnScrollTop) {
+            btnScrollTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize Realtime Listeners
+        window.addEventListener('load', () => {
+            triggerSplashAnimation();
+            updateCartUI();
+            updateFavBadges();
+            listenToProducts();
+        });
+    </script>
+</body>
+</html>
